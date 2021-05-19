@@ -2,6 +2,7 @@
 
 const input = require("readline-sync");
 
+// old scorekey this will be change to the new score key
 const oldPointStructure = {
   1: ['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'],
   2: ['D', 'G'],
@@ -20,38 +21,121 @@ function oldScrabbleScorer(word) {
  
 	  for (const pointValue in oldPointStructure) {
  
-		 if (oldPointStructure[pointValue].includes(word[i])) {
-			letterPoints += `Points for '${word[i]}': ${pointValue}\n`
-		 }
- 
+		 if (oldPointStructure[pointValue].includes(word[i])){
+			  letterPoints += `Points for '${word[i]}': ${pointValue}\n`; 
+     }
 	  }
-	}
-	return letterPoints;
+  }
+	return letterPoints
+  
  }
 
 // your job is to finish writing these functions and variables that we've named //
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   console.log("Let's play some scrabble! Enter a word:");
+    const userInput = input.question("Let's play some scrabble!\n Which scoring system would you like to use?\n0 - Traditional scoring system.\n1 - Simple scoring system. Each letter is worth 1 point.\n2 - Bonus Vowels: are worth 3pts and consonants are 1pt.\n\nEnter 0, 1, 2:\n");
+        return userInput;
+    // const userInput = input.question(request);
+    // console.log(oldScrabbleScorer(userInput));
+    // someFunction();
 };
 
-let simpleScore;
 
-let vowelBonusScore;
 
-let scrabbleScore;
+let simpleScore = {
+  name: 'simplescore',
+  description: 'each letter is one point',
+// new fucntion will score system each letter for 1 point
+scorefunction: function(newWord) {
+  newWord.toUpperCase();
+    let newScore = newWord.length;
+      return newScore
+  }
+};
 
-const scoringAlgorithms = [];
 
-function scorerPrompt() {}
+let vowelBonusScore = {
 
-function transform() {};
+//  will provide a bonus when using A, E, I, O, U
+name: 'bonus Vowels',
+description: 'Vowels are 3 pts and consonants are 1 pt.',
+scorefunction: function(vowel) {
+  let vowels = vowel.toLowerCase();
 
-let newPointStructure;
+  let vowelArray = vowels.split('');
+  let vowelLetters = 0;
+  let stardardLetters = 0;
+    for (i = 0; i < vowelArray.length; i++) {
+      if (vowelArray[i] === 'a') {
+       vowelLetters += 3;
+      }else if (vowelArray[i] === 'e') {
+        vowelLetters += 3;
+      }else if (vowelArray[i] === 'i') {
+        vowelLetters += 3;
+      }else if (vowelArray[i] === 'o') {
+        vowelLetters += 3;
+      }else if (vowelArray[i] === 'u') {
+        vowelLetters += 3;
+      }else {
+        stardardLetters += 1;
+      }
+    }
+    let points = vowelLetters + stardardLetters;
+      return points;
+}
+};
 
+let scrabbleScore = {
+  name: "Scrabble",
+  description: "the traditional scoring algorithm.",
+  scorefunction: function(word, obj) {
+    let lower = word.toUpperCase();
+    let arrayOne = lower.split('');
+    let points = 0;
+      for (i = 0; i < arrayOne.length; i ++) {
+        let num = newPointStructure[arrayOne[i]];
+          points += num;
+      }
+      return points;
+  }
+}
+
+const scoringAlgorithms = [scrabbleScore, simpleScore, vowelBonusScore];
+
+function scorerPrompt() {};
+
+function transform(oldPointStructure) {
+  let newPointStructure = {
+
+ }
+    for (item in oldPointStructure) {
+      let scr1 = oldPointStructure[item];
+        for (i = 0; i < scr1.length; i++) {
+          let lower = scr1[i].toUpperCase();
+            newPointStructure[lower] = Number(item);
+        }
+    }
+    return newPointStructure
+};
+
+let newPointStructure = transform(oldPointStructure);
+ 
 function runProgram() {
-   initialPrompt();
+  console.clear();
+   let prompt = initialPrompt();
+    console.log(`\nusing system: ${scoringAlgorithms[Number(prompt)].name}`);
+      mako = '';
+        while (mako !== 'stop') {
+          let userInput = input.question(`\nEnter a word to be scored or 'Stop!' to Quit the game:' `);
+           if (userInput === 'stop') {
+             break
+           } else {
+             let gameScore = scoringAlgorithms[Number(prompt)].scorefunction(userInput);
+              console.log("Score for" + userInput + ": " + gameScore);
+           }
+
+        }
    
 }
 
