@@ -52,7 +52,7 @@ const  simpleScore = (newWord) => {
 const simpleScoreObj = {
      name: 'simplescore',
      description: 'each letter is one point',
-     scorefunction: simpleScore
+     scoringFunction: simpleScore
 }
 
 
@@ -84,7 +84,7 @@ const vowelBonusScore = (vowel) => {
 const vowelBonusObj = {
      name: 'bonus Vowels',
      description: 'Vowels are 3 pts and consonants are 1 pt.',
-     scorefunction: vowelBonusScore
+     scoringFunction: vowelBonusScore
 };
 
 const scrabbleScore = (word, obj) => {
@@ -101,7 +101,7 @@ const scrabbleScore = (word, obj) => {
 const scrabbleScoreObj = {
      name: "Scrabble",
      description: "the traditional scoring algorithm.",
-     scorefunction: scrabbleScore
+     scoringFunction: scrabbleScore
 }
 
 const scoringAlgorithms = [scrabbleScoreObj, simpleScoreObj, vowelBonusObj];
@@ -132,7 +132,7 @@ function runProgram() {
            if (userInput === 'stop') {
              break
            } else {
-             let gameScore = scoringAlgorithms[Number(prompt)].scorefunction(userInput);
+             let gameScore = scoringAlgorithms[Number(prompt)].scoringFunction(userInput);
               console.log("Score for" + userInput + ": " + gameScore);
            }
 
