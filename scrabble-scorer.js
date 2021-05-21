@@ -16,18 +16,18 @@ const oldPointStructure = {
 function oldScrabbleScorer(word) {
 	word = word.toUpperCase();
 	let letterPoints = "";
- 
+
 	for (let i = 0; i < word.length; i++) {
- 
+
 	  for (const pointValue in oldPointStructure) {
- 
+
 		 if (oldPointStructure[pointValue].includes(word[i])){
-			  letterPoints += `Points for '${word[i]}': ${pointValue}\n`; 
+			  letterPoints += `Points for '${word[i]}': ${pointValue}\n`;
      }
 	  }
   }
 	return letterPoints
-  
+
  }
 
 // your job is to finish writing these functions and variables that we've named //
@@ -43,24 +43,20 @@ function initialPrompt() {
 
 
 
-let simpleScore = {
-  name: 'simplescore',
-  description: 'each letter is one point',
-// new fucntion will score system each letter for 1 point
-scorefunction: function(newWord) {
-  newWord.toUpperCase();
+const  simpleScore = (newWord) => {
+  newWord.toLowerCase();
     let newScore = newWord.length;
-      return newScore
-  }
+      return newScore;
 };
 
+const simpleScoreObj = {
+     name: 'simplescore',
+     description: 'each letter is one point',
+     scorefunction: simpleScore
+}
 
-let vowelBonusScore = {
 
-//  will provide a bonus when using A, E, I, O, U
-name: 'bonus Vowels',
-description: 'Vowels are 3 pts and consonants are 1 pt.',
-scorefunction: function(vowel) {
+const vowelBonusScore = (vowel) => {
   let vowels = vowel.toLowerCase();
 
   let vowelArray = vowels.split('');
@@ -83,14 +79,16 @@ scorefunction: function(vowel) {
     }
     let points = vowelLetters + stardardLetters;
       return points;
-}
 };
 
-let scrabbleScore = {
-  name: "Scrabble",
-  description: "the traditional scoring algorithm.",
-  scorefunction: function(word, obj) {
-    let lower = word.toUpperCase();
+const vowelBonusObj = {
+     name: 'bonus Vowels',
+     description: 'Vowels are 3 pts and consonants are 1 pt.',
+     scorefunction: vowelBonusScore
+};
+
+const scrabbleScore = (word, obj) => {
+    let lower = word.toLowerCase();
     let arrayOne = lower.split('');
     let points = 0;
       for (i = 0; i < arrayOne.length; i ++) {
@@ -98,21 +96,24 @@ let scrabbleScore = {
           points += num;
       }
       return points;
-  }
+};
+
+const scrabbleScoreObj = {
+     name: "Scrabble",
+     description: "the traditional scoring algorithm.",
+     scorefunction: scrabbleScore
 }
 
-const scoringAlgorithms = [scrabbleScore, simpleScore, vowelBonusScore];
+const scoringAlgorithms = [scrabbleScoreObj, simpleScoreObj, vowelBonusObj];
 
 function scorerPrompt() {};
 
 function transform(oldPointStructure) {
-  let newPointStructure = {
-
- }
+  let newPointStructure = {};
     for (item in oldPointStructure) {
       let scr1 = oldPointStructure[item];
         for (i = 0; i < scr1.length; i++) {
-          let lower = scr1[i].toUpperCase();
+          let lower = scr1[i].toLowerCase();
             newPointStructure[lower] = Number(item);
         }
     }
@@ -120,7 +121,7 @@ function transform(oldPointStructure) {
 };
 
 let newPointStructure = transform(oldPointStructure);
- 
+
 function runProgram() {
   console.clear();
    let prompt = initialPrompt();
@@ -136,7 +137,7 @@ function runProgram() {
            }
 
         }
-   
+
 }
 
 // Don't write any code below this line //
@@ -153,4 +154,3 @@ module.exports = {
 	runProgram: runProgram,
 	scorerPrompt: scorerPrompt
 };
-
